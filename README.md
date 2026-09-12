@@ -1,12 +1,47 @@
 # Prospector Scanner - ZMK Status Display Device
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-v2.2.2-green" alt="Version 2.2.2">
+  <img src="https://img.shields.io/badge/version-v2.2.3-green" alt="Version 2.2.3">
   <img src="https://img.shields.io/badge/ZMK-compatible-blue" alt="ZMK Compatible">
   <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT License">
 </p>
 
-**Latest release**: [v2.2.2 Release Notes](docs/RELEASES/v2.2.2/release_notes.md) | [All releases](https://github.com/t-ogura/zmk-config-prospector/releases)
+**Latest release**: [v2.2.3 Release Notes](docs/RELEASES/v2.2.3/release_notes.md) | [All releases](https://github.com/t-ogura/zmk-config-prospector/releases)
+
+### What's New in v2.2.3 (scanner stability release)
+
+**Scanner firmware update strongly recommended.** A deep review of the scanner
+found several long-standing causes of the "display frozen after hours of use"
+class of bugs, all fixed here:
+
+- **Stack corruption fixed**: a struct defined in two files drifted apart in
+  v2.2.0, so a 10Hz bulk copy overwrote ~8 bytes of the display thread's stack
+- **LVGL render stall fixed**: the layer-change pulse animation used a scale
+  transform whose per-frame 4-7KB buffer could fail once the LVGL pool
+  fragmented, leaving the renderer spinning forever; it now pulses opacity
+  in place (and the pool grew 32KB → 48KB)
+- **Stale selection fixed**: after every keyboard timed out, a returning
+  keyboard could land in a different slot and never be re-selected — the
+  display stayed on "Scanning..." forever
+- **Thread-safety pass**: display-thread readers now lock against the
+  processing workqueue; pointer-based keyboard access replaced with
+  copy-under-lock snapshots
+- **Crash recovery + watchdog (new)**: fatal errors and hung threads now
+  record their cause and reboot the scanner instead of freezing it; the boot
+  log reports "Recovered from crash: ..." for diagnosis
+- **Auto-brightness fix**: the ambient light sensor poll now starts on boot
+  when the persisted setting is "auto" (previously it silently did nothing
+  until the switch was toggled)
+
+**New (keyboard-side, optional)**: `CONFIG_ZMK_STATUS_ADV_CENTRAL_SIDE="AUX"`
+for split keyboards whose central is neither half (e.g. a trackball unit):
+both halves map to the left/right battery slots and the central's own battery
+shows in the Aux1 slot. Set `CONFIG_PROSPECTOR_EXPECTED_PERIPHERAL_COUNT=2`
+in that topology.
+
+**Internal**: the keyboard-tracking core moved from the shield into the shared
+module (`src/scanner_core.c`) in preparation for the upcoming Scanner Pocket
+device. Wire protocol unchanged — all v2.2.x keyboards and scanners interop.
 
 ### What's New in v2.2.2 (patch from v2.2.1)
 
@@ -48,7 +83,7 @@ No new config options. Bump the module `revision` to `v2.2.2`, `west update`, re
 ```yaml
 - name: prospector-zmk-module
   remote: prospector
-  revision: v2.2.2
+  revision: v2.2.3
   path: modules/prospector-zmk-module
 ```
 

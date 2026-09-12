@@ -6,7 +6,9 @@ This directory contains release notes for all versions of Prospector Scanner.
 
 | Version | Release Date | Status | Highlights |
 |---------|-------------|--------|------------|
-| [v2.2.1](v2.2.1/release_notes.md) | 2026-05 | **Latest Stable** | Split central peripheral discovery fix (keyboard-side patch) |
+| [v2.2.3](v2.2.3/release_notes.md) | 2026-09 | **Latest Stable** | Scanner freeze fixes, crash recovery + watchdog, AUX central battery |
+| [v2.2.2](v2.2.2/release_notes.md) | 2026-08 | Stable | Split adv regression fixes: uni-body build, burst/silent lock-up (keyboard-side patch) |
+| [v2.2.1](v2.2.1/release_notes.md) | 2026-05 | Stable | Split central peripheral discovery fix (keyboard-side patch) |
 | [v2.2.0](v2.2.0/release_notes.md) | 2026-04 | Stable | New layouts, BLE ADV rebuild, version protocol, NVS persistence, stability fix |
 | [v2.1.0](v2.1.0/release_notes.md) | 2026-01 | Stable | Zephyr 4.x, dynamic battery display, channel filter, layer slide mode, Pong Wars |
 | [v2.0.0](v2.0.0/release_notes.md) | 2025-11-20 | Stable | Touch panel support, USB display fix, thread safety, timeout brightness |
@@ -31,6 +33,6 @@ We follow semantic versioning (MAJOR.MINOR.PATCH):
 
 ## Quick Links
 
-- **Latest Release**: [Download v2.2.1](https://github.com/t-ogura/zmk-config-prospector/releases/latest)
+- **Latest Release**: [Download v2.2.3](https://github.com/t-ogura/zmk-config-prospector/releases/latest)
 - **All Releases**: [GitHub Releases](https://github.com/t-ogura/zmk-config-prospector/releases)
 - **Migration Guide**: See each version's release notes for upgrade instructions
